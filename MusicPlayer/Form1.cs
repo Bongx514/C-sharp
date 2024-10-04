@@ -26,25 +26,22 @@ namespace MusicPlayer
             InitializeComponent();
 
             var folderPath = @"C:\Users\bonga\Music\New music";
-            //load all mp3 files from the specified folder
+            
             _mp3Files.AddRange(Directory.GetFiles(folderPath, "*.mp3"));
-            //initialize the wave payer
+            
             _wavePlayer = new WaveOut();
         }
 
         private void PlayTrack(string filePath)
         {
-            //stop the current track if theres any playing
+            
             _wavePlayer.Pause();
 
-            //Update the label with the name of the track playing
             var trackName = Path.GetFileNameWithoutExtension(filePath);
             label1.Text = "Now Playing: " + trackName;
             
-            //Load the new track using the wave player
             _audioFileReader = new AudioFileReader(filePath);
 
-            //Playe the new track using the wave player
             _wavePlayer.Init(_audioFileReader);
             _wavePlayer.Play();
         }
@@ -56,13 +53,11 @@ namespace MusicPlayer
             {
                 if (_currentTrackIndex == -1)
                 {
-                    //start playing the first track
                     _currentTrackIndex = 0;
                     PlayTrack(_mp3Files[_currentTrackIndex]);
                 }
                 else
                 {
-                    //resume plaing the current track
                     _wavePlayer.Play();
                 }
             }
@@ -87,9 +82,7 @@ namespace MusicPlayer
             if (_mp3Files.Any())
             {
                 _wavePlayer.Pause();
-                //move to the next track
                 _currentTrackIndex = (_currentTrackIndex + 1) % _mp3Files.Count;
-                //play the next track
                 PlayTrack(_mp3Files[_currentTrackIndex]);
             }
         }
@@ -98,10 +91,8 @@ namespace MusicPlayer
         {
             if (_mp3Files.Any())
             {
-                //stop current track
                 _wavePlayer.Pause();
-
-                //move to previous track
+                
                 _currentTrackIndex--;
 
                 if (_currentTrackIndex < 0)
@@ -109,7 +100,6 @@ namespace MusicPlayer
                     _currentTrackIndex = _mp3Files.Count - 1;
                 }
 
-                //Play the previous track
                 PlayTrack(_mp3Files[_currentTrackIndex]);
             }
         }
